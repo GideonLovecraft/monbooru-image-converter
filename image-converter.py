@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""image-converter: convert monbooru images between WebP, JPEG, PNG and AVIF.
+"""image-converter: convert monbooru images between WebP, JPEG and PNG.
 
 A monbooru plugin. It pairs with monbooru like any peer, adds a "convert
 image" button to an image's page and three format buttons to the batch bar,
@@ -261,22 +261,11 @@ def replace_image_file(image_id, filename, data, gallery=""):
 # ---------------------------------------------------------------------------
 
 
-def _avif_available():
-    try:
-        from PIL import features
-        return bool(features.check("avif"))
-    except Exception:
-        return False
-
-
 FORMATS = {
     "webp": {"ext": ".webp", "pil": "WEBP", "label": "WebP", "lossy": True},
     "jpeg": {"ext": ".jpg", "pil": "JPEG", "label": "JPEG", "lossy": True},
     "png": {"ext": ".png", "pil": "PNG", "label": "PNG", "lossy": False},
 }
-if _avif_available():
-    FORMATS["avif"] = {"ext": ".avif", "pil": "AVIF",
-                       "label": "AVIF (monbooru needs ffmpeg to show it)", "lossy": True}
 
 
 def human_size(n):
@@ -469,7 +458,7 @@ def _fit_mode(img, target):
         if img.mode == "P":
             return img.convert("RGBA")
         return img
-    # webp / avif
+    # webp
     if img.mode in ("RGB", "RGBA"):
         return img
     if img.mode == "L":
@@ -504,20 +493,13 @@ def _encode(img, target, quality, exif, icc, text):
         if exif:
             kwargs["exif"] = exif
         img.save(out, "JPEG", **kwargs)
-    elif target == "webp":
+    else:  # webp
         kwargs = {"quality": quality, "method": 4}
         if icc:
             kwargs["icc_profile"] = icc
         if exif:
             kwargs["exif"] = exif
         img.save(out, "WEBP", **kwargs)
-    else:  # avif
-        kwargs = {"quality": quality, "speed": 6}
-        if icc:
-            kwargs["icc_profile"] = icc
-        if exif:
-            kwargs["exif"] = exif
-        img.save(out, "AVIF", **kwargs)
     return out.getvalue()
 
 

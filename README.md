@@ -1,6 +1,6 @@
 # image-converter — monbooru plugin
 
-Convert an image between **WebP, JPEG, PNG and AVIF** from right inside
+Convert an image between **WebP, JPEG and PNG** from right inside
 monbooru, in the spirit of Obsidian's *image-converter*: a small settings
 pop-in on the image page, one-click format buttons, and the same three buttons
 for a batch. Conversion runs locally with [Pillow](https://python-pillow.org/)
@@ -23,9 +23,8 @@ CBZ/ZIP archives are left alone and dropped from a batch.
 It is deliberately small: the image is already on screen behind the pop-in, so
 the box shows only the settings.
 
-- **Format** — WebP, JPEG, PNG, plus AVIF when Pillow has the AVIF codec
-  (Pillow 11.3+ built with libavif).
-- **Quality** — 1–100 for WebP/JPEG/AVIF; PNG ignores it (disabled).
+- **Format** — WebP, JPEG or PNG.
+- **Quality** — 1–100 for WebP/JPEG; PNG ignores it (disabled).
 - **Size** — width × height in pixels, prefilled with the current dimensions,
   with **keep ratio** on by default: editing one field follows the other.
   Uncheck it to stretch. Leaving the values untouched means no resize; typing
@@ -56,7 +55,7 @@ single-image box has no such limit.
 
 ## Quality
 
-One quality value, default **100**, shared by WebP, JPEG and AVIF — this is an
+One quality value, default **100**, shared by WebP and JPEG — this is an
 image booru, so the default favors fidelity over file size. JPEG at quality
 95+ also switches to 4:4:4 chroma, so line art keeps its color edges. Lower it
 (82–90) if disk space matters. Change it in the convert box with *remember*
@@ -129,7 +128,7 @@ pairing, since monbooru calls it at the address from the pairing.
 
 ## Limits
 
-- Inputs must be decodable by Pillow (JPEG, PNG, WebP, AVIF, GIF frames).
+- Inputs must be decodable by Pillow (JPEG, PNG, WebP and GIF frames).
   **JPEG XL is not** — monbooru shows it, Pillow cannot read it, so the
   conversion fails with a clear message.
 - No undo: the file is rewritten in place. Keep a backup of anything
@@ -174,6 +173,8 @@ them; only a monbooru theme that overrides `--plugin` changes that color.
 4. `POST /api/v1/images/{id}/file` (multipart, field `file`) — replaces the
    bytes in place; monbooru re-derives hash, dimensions, thumbnail and phash.
 
-Contract `1`. Tested offline against Pillow 12.3 with WebP, AVIF and EXIF
+Contract `1`. Tested offline against Pillow 12.3 with WebP, PNG, JPEG and EXIF
 round-trips; the pairing/button contract follows monbooru's
 `examples/simple-edit`.
+
+

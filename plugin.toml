@@ -1,4 +1,4 @@
-# image-converter: convert monbooru images between WebP, JPEG, PNG and AVIF,
+# image-converter: convert monbooru images between WebP, JPEG and PNG,
 # in place, keeping the row's tags, sources, collections and relations.
 #
 # Needs Python 3.9+ with Pillow installed (python -m pip install pillow).
@@ -12,3 +12,4 @@ args = ["image-converter.py"]
 command_windows = "python"
 args_windows = ["image-converter.py"]
 contract = 1
+
